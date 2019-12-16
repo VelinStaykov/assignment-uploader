@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using assignment_uploader.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +26,17 @@ namespace assignment_uploader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDBContext>(
+                    options => options.UseSqlServer(Configuration.GetConnectionString("assignment-uploaderDBConnection"))
+                );
+
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+                {
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 4;
+                }
+            ).AddEntityFrameworkStores<AppDBContext>();
+
             services.AddControllersWithViews();
         }
 
@@ -41,6 +55,8 @@ namespace assignment_uploader
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

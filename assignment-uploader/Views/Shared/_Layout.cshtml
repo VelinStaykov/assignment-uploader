@@ -16,15 +16,42 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                
+                <div class="navbar-collapse collapse">
+                     @if (signInManager.IsSignedIn(User))
+                     {
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                            <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark">Hello @User.Identity.Name!</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form-inline" method="post" asp-action="logout" asp-controller="account">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                     }
+                     else
+                     {
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        </ul>
+                     }
                 </div>
             </div>
         </nav>
@@ -37,7 +64,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - assignment_uploader - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - assignment_uploader
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

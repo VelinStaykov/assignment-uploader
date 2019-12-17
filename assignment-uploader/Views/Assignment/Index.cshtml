@@ -1,0 +1,57 @@
+﻿@model IEnumerable<AppAssignment>
+@inject UserManager<AppUser> userManager;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Assignments</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.File)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+         { 
+            @if (userManager.GetUserId(User) == item.Uploader) @*Shows only the courseworks uploaded by the current user*@
+             {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" onclick="location.href = '@Url.Action("DownloadFileFromDB", "Assignment", new { id = item.Id })';">Download</button>
+                    </td>
+                </tr>
+             }
+         }
+    </tbody>
+</table>
+
+<div>
+    <button id="Add" class="btn-secondary">Add</button>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+    document.getElementById("Add").onclick = function () {
+        location.href = '@Url.Action("Add", "Assignment")';
+    };
+    </script>
+}
+

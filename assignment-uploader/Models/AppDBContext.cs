@@ -18,5 +18,7 @@ namespace assignment_uploader.Models
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<AppAssignment> Assignments { get; set; }
     }
 }

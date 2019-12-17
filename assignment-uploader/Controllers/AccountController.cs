@@ -22,7 +22,14 @@ namespace assignment_uploader.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            if (signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Assignment");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -46,7 +53,14 @@ namespace assignment_uploader.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            if (signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Assignment");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
